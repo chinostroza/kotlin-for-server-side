@@ -127,6 +127,30 @@ data class Blog Properties(val title: String, val banner: Banner) {
 	data class Banner(val title: String? = null, val content:String)
 }
 ```
+
+- Spring Security Kotlin DSL
+  New in Spring SEcurity 5.4
+  
+```kotlin
+override fun configure(http: HttpSecurity) {
+	http {
+    	authorizeRequests {
+        	authorize("/css/**", permitAll)
+            authorize("/user/**", hasAuthority("ROLE_USER"))
+        }
+        formLogin {
+        	loginPage = "/log-in"
+        }
+    }
+}
+```
+
+## Links
+
+- [https://start.spring.io](https://start.spring.io)
+- [https://spring.io/guides/tutorials/spring-boot-kotlin](https://spring.io/guides/tutorials/spring-boot-kotlin)
+- [https://github.com/spring-projects-experimental/spring-graalvm-native](https://github.com/spring-projects-experimental/spring-graalvm-native)
+- [https://github.com/spring-projects-experimental/spring-fu](https://github.com/spring-projects-experimental/spring-fu)
  
 # Kotlin
  
@@ -236,7 +260,7 @@ fun main(){
 
 7. Asignando un valor
 
-
+ 
 ```kotlin
 
 fun main(){
