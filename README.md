@@ -53,6 +53,10 @@
     
 ## Referencias
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/8xAH7RU0Y44" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/dSIIZastK58" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
  - [Building web applications with Spring Boot and Kotlin](https://spring.io/guides/tutorials/spring-boot-kotlin/)
  - [https://kotlin.link/ it's a collection of libraries, frameworks, tools](https://kotlin.link/)
  - [KotlinConf 2019: Kotlin in Space by Maxim Mazin](https://www.youtube.com/watch?v=JnmHqKLgYY4)
