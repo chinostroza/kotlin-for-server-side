@@ -69,6 +69,96 @@
  
 ## Kotlin language features
 
+## Intro
+
+### Hello World
+### Variables
+
+1. val
+	- Solo de lectura
+    - Se puede asignar una sola vez
+    
+2. var
+	- mutable
+    
+```kotlin
+fun main(){
+	val question : String = 
+    	"life, the universe, " +
+        "and everything"
+    println("$question")
+    //question = "sure?"
+}
+```
+
+3. Local type inference
+
+```kotlin
+fun main(){
+	val greeting = "Hi!"
+	var number = 0
+	println("$greeting Hola $number")
+}
+```
+	- Kotlin is a statically-type language
+    - Which means that every variable, every expression has a type
+    - Even if you omit the type, the compiler just infers it for you
+    
+4. Why doesn't the following code compile?
+
+```kotlin
+fun main(){
+	var string = 1
+	string = "abc"
+}
+```
+
+	1. Because you can't re-assign var
+    2. Because you can't assign an integer value to a variable of String type
+    3. Because you can't assign a string literal to a variable of Int type
+    
+5. Is it possible to modify an object stored in *val* ?
+
+	1. yes
+    2. no
+
+6. why doesnt't the following code compile?
+
+```kotlin
+fun main(){
+	val list = listOf("Java")
+    list.add("Kotlin")
+}
+```
+
+	1. Because you can't modify a read-only list
+    2. Because you can't modify an object stored in val
+    
+7. *Prefer val to var*
+
+8. Don't omit types (specify them explicitly)
+   if they might be not clear from the context
+   
+## Functions
+
+## Named & default arguments
+
+## Conditionals: if & when
+
+## Loops
+
+## Exceptions
+
+## Extensions Functions
+
+## Examples from the Standard Library
+
+## Calling Extensions
+
+## Importance of extensions
+
+
+
 
 ## Null safety
 
@@ -967,6 +1057,32 @@ fun main(){
 
 }
 ```
+
+## Properties
+
+## More about Properties
+
+## Laze or late initialization
+
+## OPP in Kotlin
+
+## Constructors, Inheritance syntax
+
+## Class Modifiers I
+
+## Class modifiers II
+
+## Constants
+
+## Generics
+
+## OOP design choices
+
+## Operator Overloading
+
+## Coventions
+
+## (Not) usign operator overloading
 
 ## Kotlin for Spring
  
