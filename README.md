@@ -1,4 +1,57 @@
 # Kotlin for Server Side
+    
+## Why Kotlin?
+
+1. Kotlin is facil de aprender
+	- Kotlin tiene una curva de aprendizaje incremental, es facil sentirse productivo
+    
+2. Kotlin es obstinado
+ 	- A diferencia de otros lenguajes, evita el problema social de acordar el estilo con los
+      ingenieros al proporcionar una forma única y obstinada sobre cómo hacer algo.
+    - Recordar que pasamos más de un 80% leyendo código.
+    
+3. Kotlin tiene características de lenguaje agradables
+	- Inmutabilidad opcional
+    - Concepto funcionales, más completos integrados en coleeciones
+    - Lambdas adecuadas
+    - Argmentos con nombre que permiten más, con menos código
+    
+4. Se puede adoptar de forma incremental
+	- JetBrains realmente pensó en Java Interop cuidadosamente
+    - Consideró cómo se puede migrar facilmente hacia Kotlin poco a poco
+    - Por ejemplo se pueden comenzar escribiendo los test, etc.
+    
+5. Kotlin tiene una comunidad una gran comunidad
+	- Intercambio de conocimiento con la Comunidad de Android
+    - Spring soporte oficial
+    - Etc.
+    
+6. Problemas conocidos de Java
+	- Null references
+    - Boilerplate code
+    - Mutability
+   	- Esto es debido a la forma en el que el lenguaje fue desarrollado
+		- Java permite la creación de variable anulables por defecto
+		- Esto permite la mutación de variables por todo el código
+    	- Relentiza la productividad del desarrollador
+    	- Y quita tiempo a los desarrolladores, para que se efoquen en resolver necesidades comerciales
+ 
+## Adoptando Kotlin
+
+1. Tener la mayor cantidad de desarrolladores hablando de Kotlin
+	- Identificar los desarrolladores con experiencia en Kotlin
+    
+2. Crear un grupo de interes para discutir los pros y contras
+	- Establer un criterio común para adoptar
+    
+3. Entrenarse con los algunos koans , tutoriales, etc para ver fortalezas y debilidades
+
+4. Crear un microservicio y discutir la experiencia
+
+5. Ver al compatibilidad, con la infraestructura actual
+     
+    
+## Referencias
 
  - [Building web applications with Spring Boot and Kotlin](https://spring.io/guides/tutorials/spring-boot-kotlin/)
  - [https://kotlin.link/ it's a collection of libraries, frameworks, tools](https://kotlin.link/)
@@ -13,147 +66,15 @@
  - [Introducing Kotlin at ING, a long but rewarding story](https://medium.com/ing-blog/introducing-kotlin-at-ing-a-long-but-rewarding-story-1bfcd3dc8da0)
  - [QLDB at Amazon](https://talkingkotlin.com/qldb/)
  
-
-## Kotlin for Spring
  
+## Kotlin language features
 
- - [Start your project on](https://start.spring.io)
- - Choose your programming model
- 	- The most popular programming model, at least with Java, is annotations.
-    
-```kotlin
-@RestController
-@RequestMapping("/api/article")
-class ArticleController(private val repository: ArticleRepository) {
 
-	@GetMapping("/")
-    fun findAll() = repository.findAllByOrderByAddedAtDesc()
-    
-    @GetMapping("/{slug}")
-    fun findOne(@PathVariable slug: String) = 
-    	repository.findBySlug(slug) ?:
-        	throw ResponseStatusExeption(NOT_FOUND)
-}
-```
+## Null safety
 
- - Or functional APIs?
- 
-```kotlin
-@Bean
-fun route(repository: ArticleRepository) = router {
-	"/api/article".nest {
-    	GET("/") {
-        	ok().body{respository.findAllByOrder()
-        }
-        GET("/{slug}") {
-        	val slug = it.pathVariable("slug")
-            val article = repository.findBySlug(slug) ?:
-            	throw ResponseStatusException(NOT_FOUND)
-            ok().body(article)
-        }
-    }
-}
-```
+ <img src="https://www.intuit.com/blog/wp-content/uploads/2019/06/Screen-Shot-2019-06-21-at-11.26.15-AM.png" />
 
- - First class Coroutines support
- 	- Spring WebFlux
-    - Spring MVC (new in Spring Boot 2.4)
-    - Spring Data Reactive
-    - Spring Messaging (RSocket)
-    - Spring Vault
-    
-    
-## Suspending functions
-### Spring MVC and WebFlux
 
-```kotlin
-@GetMapping("/api/banner")
-suspend fun suspendingEndpoint(): Banner {
-	delay(10)
-    return Banner("title", "Lorem ipsum")
-}
-```
-
-## Flow
-### Spring MVC and WebFlux
-
-- Flow is the coroutines equivalent for Reactor FLux, or similar RxJava Types
-
-```kotlin
-@GetMapping("/banners")
-suspend fun flow(): Flow<Banner> = client.get()
-	.uri("/messages")
-    .accept(MediaType.TEXT_EVENT_STREAM)
-    .retrieve()
-    .bodyToFlow<String>()
-    .map { Banner("title", it) }
-```
-
-## RSocket
-
-- Backpressure is a feature highlighted in reactive streams
-
-```kotlin
-class MessageHandler(private val builder: RSocketRequester.Builder) {
-
-	// ...
-    
-    suspend fun stream(request: ServerRequest): ServerResponse {
-    	val requester = builder
-        	.dataMimeType(APPLICATION_CBOR)
-            .connectTcpAndAwait("localhost", 9898)
-        val replies = requester
-        	.route("bot.messages")
-            .dataWithType(processor)
-            .retrieveFlow<Message>()
-        val broadcast = requester.route("bot.broadcast").retrieveFlow<Message>()
-        val messages = flowOf(replies, processor.asFlow(), broadcast).flattenMerge()
-        return ok().sse().bodyAndwait(messages)
-    }
-}
-```
-
-# Important point's
-
-- 100% of Spring Framework API with null-safety annotations
-  -> no NPE for Spring applications written in Kotlin
-  
-- In Spring Boot 2.3, support for Kotlin data classes with val properties
-
-```kotlin
-@ConstructorBinding
-@ConfigurationProperties("blog")
-data class Blog Properties(val title: String, val banner: Banner) {
-	data class Banner(val title: String? = null, val content:String)
-}
-```
-
-- Spring Security Kotlin DSL
-  New in Spring SEcurity 5.4
-  
-```kotlin
-override fun configure(http: HttpSecurity) {
-	http {
-    	authorizeRequests {
-        	authorize("/css/**", permitAll)
-            authorize("/user/**", hasAuthority("ROLE_USER"))
-        }
-        formLogin {
-        	loginPage = "/log-in"
-        }
-    }
-}
-```
-
-## Links
-
-- [https://start.spring.io](https://start.spring.io)
-- [https://spring.io/guides/tutorials/spring-boot-kotlin](https://spring.io/guides/tutorials/spring-boot-kotlin)
-- [https://github.com/spring-projects-experimental/spring-graalvm-native](https://github.com/spring-projects-experimental/spring-graalvm-native)
-- [https://github.com/spring-projects-experimental/spring-fu](https://github.com/spring-projects-experimental/spring-fu)
- 
-# Kotlin
- 
 ## Nullable types
 
 ### El error del billon de dolares
@@ -260,7 +181,6 @@ fun main(){
 
 7. Asignando un valor
 
- 
 ```kotlin
 
 fun main(){
@@ -970,11 +890,7 @@ data class Hero(
 
 )
 
-
-
 enum class Gender { MALE, FEMALE }
-
-
 
 val heroes = listOf(
 
@@ -1051,3 +967,142 @@ fun main(){
 
 }
 ```
+
+## Kotlin for Spring
+ 
+
+ - [Start your project on](https://start.spring.io)
+ - Choose your programming model
+ 	- The most popular programming model, at least with Java, is annotations.
+    
+```kotlin
+@RestController
+@RequestMapping("/api/article")
+class ArticleController(private val repository: ArticleRepository) {
+
+	@GetMapping("/")
+    fun findAll() = repository.findAllByOrderByAddedAtDesc()
+    
+    @GetMapping("/{slug}")
+    fun findOne(@PathVariable slug: String) = 
+    	repository.findBySlug(slug) ?:
+        	throw ResponseStatusExeption(NOT_FOUND)
+}
+```
+
+ - Or functional APIs?
+ 
+```kotlin
+@Bean
+fun route(repository: ArticleRepository) = router {
+	"/api/article".nest {
+    	GET("/") {
+        	ok().body{respository.findAllByOrder()
+        }
+        GET("/{slug}") {
+        	val slug = it.pathVariable("slug")
+            val article = repository.findBySlug(slug) ?:
+            	throw ResponseStatusException(NOT_FOUND)
+            ok().body(article)
+        }
+    }
+}
+```
+
+ - First class Coroutines support
+ 	- Spring WebFlux
+    - Spring MVC (new in Spring Boot 2.4)
+    - Spring Data Reactive
+    - Spring Messaging (RSocket)
+    - Spring Vault
+    
+    
+## Suspending functions
+### Spring MVC and WebFlux
+
+```kotlin
+@GetMapping("/api/banner")
+suspend fun suspendingEndpoint(): Banner {
+	delay(10)
+    return Banner("title", "Lorem ipsum")
+}
+```
+
+## Flow
+### Spring MVC and WebFlux
+
+- Flow is the coroutines equivalent for Reactor FLux, or similar RxJava Types
+
+```kotlin
+@GetMapping("/banners")
+suspend fun flow(): Flow<Banner> = client.get()
+	.uri("/messages")
+    .accept(MediaType.TEXT_EVENT_STREAM)
+    .retrieve()
+    .bodyToFlow<String>()
+    .map { Banner("title", it) }
+```
+
+## RSocket
+
+- Backpressure is a feature highlighted in reactive streams
+
+```kotlin
+class MessageHandler(private val builder: RSocketRequester.Builder) {
+
+	// ...
+    
+    suspend fun stream(request: ServerRequest): ServerResponse {
+    	val requester = builder
+        	.dataMimeType(APPLICATION_CBOR)
+            .connectTcpAndAwait("localhost", 9898)
+        val replies = requester
+        	.route("bot.messages")
+            .dataWithType(processor)
+            .retrieveFlow<Message>()
+        val broadcast = requester.route("bot.broadcast").retrieveFlow<Message>()
+        val messages = flowOf(replies, processor.asFlow(), broadcast).flattenMerge()
+        return ok().sse().bodyAndwait(messages)
+    }
+}
+```
+
+# Important point's
+
+- 100% of Spring Framework API with null-safety annotations
+  -> no NPE for Spring applications written in Kotlin
+  
+- In Spring Boot 2.3, support for Kotlin data classes with val properties
+
+```kotlin
+@ConstructorBinding
+@ConfigurationProperties("blog")
+data class Blog Properties(val title: String, val banner: Banner) {
+	data class Banner(val title: String? = null, val content:String)
+}
+```
+
+- Spring Security Kotlin DSL
+  New in Spring SEcurity 5.4
+  
+```kotlin
+override fun configure(http: HttpSecurity) {
+	http {
+    	authorizeRequests {
+        	authorize("/css/**", permitAll)
+            authorize("/user/**", hasAuthority("ROLE_USER"))
+        }
+        formLogin {
+        	loginPage = "/log-in"
+        }
+    }
+}
+```
+
+## Links
+
+- [https://start.spring.io](https://start.spring.io)
+- [https://spring.io/guides/tutorials/spring-boot-kotlin](https://spring.io/guides/tutorials/spring-boot-kotlin)
+- [https://github.com/spring-projects-experimental/spring-graalvm-native](https://github.com/spring-projects-experimental/spring-graalvm-native)
+- [https://github.com/spring-projects-experimental/spring-fu](https://github.com/spring-projects-experimental/spring-fu)
+ 
