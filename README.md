@@ -12,7 +12,7 @@
     
 3. Kotlin tiene características de lenguaje agradables
 	- Inmutabilidad opcional
-    - Concepto funcionales, más completos integrados en coleeciones
+    - Concepto funcionales, más completos integrados en colecciones
     - Lambdas adecuadas
     - Argmentos con nombre que permiten más, con menos código
     
