@@ -65,6 +65,7 @@
  - [Why We Write Micro-Services in Kotlin](https://spruce.co/blog/why-we-write-micro-services-in-kotlin)
  - [Introducing Kotlin at ING, a long but rewarding story](https://medium.com/ing-blog/introducing-kotlin-at-ing-a-long-but-rewarding-story-1bfcd3dc8da0)
  - [QLDB at Amazon](https://talkingkotlin.com/qldb/)
+ - [Kotlin for Java Developers](https://www.coursera.org/learn/kotlin-for-java-developers/home/welcome)
  
  
 ## Kotlin language features
@@ -156,8 +157,6 @@ fun main(){
 ## Calling Extensions
 
 ## Importance of extensions
-
-
 
 
 ## Null safety
