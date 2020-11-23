@@ -142,6 +142,69 @@ fun main(){
    
 ## Functions
 
+1. This function returns a maximum of two values
+
+```kotlin
+fun max(a: Int, b: Int): Int {
+	return if ( a > b ) a else b
+}
+
+fun main(){
+	println( max(1,2) )
+}
+```
+
+2. If your function simply returns one expression
+   you can use an alternative syntax, so-called, *"function with expression body"*
+   
+```kotlin
+fun max(a: Int, b: Int): Int = if ( a > b ) a else b
+
+fun main(){
+	println( max(1,2) )
+}
+```
+
+3. Function returning Unit
+
+```kotlin
+fun max(a: Int, b: Int): Int = if ( a > b ) a else b
+
+
+fun displayMax(a: Int, b:Int) {
+// fun displayMax(a: Int, b:Int) : Unit {
+// es lo mismo
+println( max(a,b) )
+}
+
+fun main(){
+	displayMax( 1, 2 )
+}
+```
+
+4. In Kotlin you can define functions everywhere
+
+```kotlin
+// Top-level function
+fun topLevel() = 1
+// Member function
+class A {
+    fun member() = 2
+}
+
+// Local function
+fun other() : Int{
+    fun local() = 3
+    return local()
+}
+
+fun main(){
+    val out = A()
+    println ( out.member())
+    println(other())
+}
+```
+
 ## Named & default arguments
 
 ## Conditionals: if & when
