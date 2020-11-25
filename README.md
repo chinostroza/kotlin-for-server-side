@@ -49,6 +49,8 @@
 4. Crear un microservicio y discutir la experiencia
 
 5. Ver al compatibilidad, con la infraestructura actual
+
+6. Hablar con el Feña
      
     
 ## Referencias
@@ -217,9 +219,82 @@ fun main(){
 
 ## Exceptions
 
+## Kotlin Scope Functions
+
+### let
+- Return : Lambda result
+- Context object : it
+### apply
+- Return: context object
+- Context object : this
+### run
+- Return : lambda result
+- Context objetc : 
+### with
+- Return : lambda result
+- Context object : this
+### also
+- Return : context object
+- Context object : it
 ## Extensions Functions
 
+1. Extension Functions, extends the class
+
+```kotlin
+fun String.lastChar() = this.get( this.length - 1 )
+```
+
+2. It is defined outside of the class but can be
+   called as a regular member to this class
+   
+3. The time that the function extends is called a Receiver
+   here, String is the receiver of the lastChar function
+   
+4. We can access the receiver by this reference
+
+5. *this* can be ommitted
+
+```kotlin
+fun String.lastChar() = get(length - 1)
+```
+
+6. An important thing to note here is that you
+   cant't define an extension and use it everywhere
+   
+7. You have to import it explicitly
+
+```kotlin
+import com.example.util.lastChar
+val c: Char = "abc".lastChar()
+```
+
+8. How many arguments does the *repeat* function have it you call it from Java?
+
+```kotlin
+fun String.repeat(n: Int): String {
+	val sb = StringBuilder(n* length)
+    for (i in 1..) {
+    	sb.append(this)
+    }
+    return sb.toString()
+}
+```
+	1. 1
+    2. 2
+    3. 3
+    
+9. Is it possible to call a *private* member of *String* inside an extension function to *String*
+
+```kotlin
+fun String.lastChar() = get(length -1)
+```
+
+
 ## Examples from the Standard Library
+
+1. Extensions play an important role in the language
+2. In fact, ***Kotlin standard library is just Java standard library + extensions***
+3. That provides very smooth interoperability between Java code and Kotlin code
 
 ## Calling Extensions
 
@@ -1281,10 +1356,17 @@ override fun configure(http: HttpSecurity) {
 }
 ```
 
+## Spring Boot for Dit
+
+1. Download IntelliJ
+2. Generate with [https://start.spring.io/](https://start.spring.io/)
+3. Generate github project
+
 ## Links
 
 - [https://start.spring.io](https://start.spring.io)
+- [Creating a RESTful Web Service with Spring Boot](https://kotlinlang.org/docs/tutorials/spring-boot-restful.html)
 - [https://spring.io/guides/tutorials/spring-boot-kotlin](https://spring.io/guides/tutorials/spring-boot-kotlin)
 - [https://github.com/spring-projects-experimental/spring-graalvm-native](https://github.com/spring-projects-experimental/spring-graalvm-native)
 - [https://github.com/spring-projects-experimental/spring-fu](https://github.com/spring-projects-experimental/spring-fu)
- 
+- [Spring Native for GraalVM](https://github.com/spring-projects-experimental/spring-graalvm-native) 
