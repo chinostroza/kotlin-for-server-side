@@ -49,8 +49,6 @@
 4. Crear un microservicio y discutir la experiencia
 
 5. Ver al compatibilidad, con la infraestructura actual
-
-6. Hablar con el Feña
      
     
 ## Referencias
@@ -1383,6 +1381,44 @@ class Child : Parent()
 open class Parent(val name: String)
 class Child(name: String) : Parent(name)
 ```
+
+22. Calling a constructor of the parent class
+
+```kotlin
+open class Parent(val name: String)
+class Child(name: String) : Parent(name)
+
+open class Parent(val name: String)
+class Child: Parent {
+	constructor(name: String, param: Int) : super(name)
+}
+```
+
+23. Use the super keyword to call the constructor of the parent class from
+    from the secondary constructor
+    
+24. Initialization order. What will be printed?
+
+```kotlin
+open class Parent {
+	init { print("parent ")}
+}
+
+class Child : Parent() {
+	init { print("child ")}
+}
+
+fun main() {
+	Child()
+}
+```
+
+1. child
+2. child parent
+3. parent child
+
+25. Overriding properties. What will be printed ?
+
 
 ## Class Modifiers I
 
