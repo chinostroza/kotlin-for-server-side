@@ -213,9 +213,78 @@ fun main(){
 
 ## Named & default arguments
 
+1. What will be printed?
+
+```kotlin
+fun main(){
+	println(listOf('a','b','c').joinToString(
+    separator = "", prefix = "(", postfix =")"))
+}
+```
+
+2. You can specify the names of the arguments directly in the code
+   that often makes the invocation more readable
+   
+3. What will be printed?
+
+```kotlin
+fun displaySeparator(character: Char = '*', size: Int = 10){
+	repeat(size) {
+    	print(character)
+    }
+}
+
+fun main(){
+	displaySeparator(3,'5')
+}
+```
+
+4. In Kotlin, there are no implicit conversions
+
+5. How many argument combinations are possible?
+
+```kotlin
+fun sum(a: Int = 0, b: Int = 0, c: Int = 0) = a + b + c 
+
+fun main(){    
+	sum(a = 1, b = 2)
+    sum(c = 3)
+    ...
+}
+```
+
 ## Conditionals: if & when
 
+1. *if* is an expression in Kotlin
+
+```kotlin
+val max = if (a > b) a else b
+```
+
+2. In Kotlin ***No*** ternay operator in Kotlin
+
+3. ***when*** as ***switch***
+
+```kotlin
+enum class Color {
+	BLUE, ORANGE, RED
+}
+fun getDescription(color: Color): String = 
+	when (color) {
+    	BLUE -> "cold"
+        ORANGE -> "mild"
+        RED -> "hot"
+    }
+```
+
+4. You should always replace if with when ?
+
+	1. True
+    2. False
+
 ## Loops
+
+
 
 ## Exceptions
 
@@ -1208,6 +1277,112 @@ fun main(){
 ## OPP in Kotlin
 
 ## Constructors, Inheritance syntax
+
+1. You call a constructor as a regular function
+
+```kotlin
+class A
+
+val a = A()
+```
+
+2. Concise primary constructor
+
+```kotlin
+class Person(val name: String, val age: Int)
+```
+
+3. The main constructor is called the primary constructor
+
+4. Full primary constructor syntax
+
+```kotlin
+//				constructor parameter
+class Person(name: String){
+	// constructor body
+    init {
+    
+    }
+}
+```
+
+```kotlin
+class Person(name: String){
+	val name = String
+    
+    init{
+    	this.name = name
+    }
+}
+```
+
+5. Is equal that :
+
+```kotlin
+class Person (val name: String)
+```
+
+6. ***val/var*** on a parameter creates a property
+
+7. When you put val or var before the parameter
+
+8. That automatically creates a property
+
+9. Without val or var it's on the constructor parameter
+
+10. Changing visibility of a constructor
+
+```kotlin
+class InternalComponent
+internal constructor(name: String){
+...
+}
+```
+
+11. You can define Secondary constructor
+
+```kotlin
+//              primary constructor
+class Rectangle(val height: Int, val width: Int){
+	// secondary constructor
+	constructor(side: Int) : this(side,side) { ... }
+}
+```
+
+12. You call another constructor using ***this*** keywords
+
+13. Note that if a primary or secondary constructor is present
+
+14. ***No default constructor without arguments is generated***
+
+15. and then later on is automatically generated only if you definne no other constructors
+
+16. ***Different syntax for inheritance***
+
+17. In Kotlin, the syntax to express inheritance is a bit different than in Java
+
+18. You use colon to teplace both extends and implements
+
+19. The same syntax for extends & implements
+
+```kotlin
+interface Base
+class BaseImpl : Base
+
+open class Parent
+				//constructor call
+class Child : Parent()
+```
+
+20. If you need to pass any arguments to initialize the superclass
+
+21. You put them inside these parenthesis
+
+```kotlin
+// Calling a constructor of the parent class
+open class Parent(val name: String)
+class Child(name: String) : Parent(name)
+```
 
 ## Class Modifiers I
 
