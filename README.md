@@ -1419,10 +1419,288 @@ fun main() {
 
 25. Overriding properties. What will be printed ?
 
+```kotlin
+open class Parent {
+	open val foo = 1
+    init {
+    	println(foo)
+    }
+}
+
+class Child: Parent() {
+	override val foo = 2
+}
+
+fun main(){
+	Child()
+}
+```
+
 
 ## Class Modifiers I
 
+1. In Kotlin, you can use class modifiers to add new semantics to classes.
+   Modifiers can instruct the compiler to generate new methods or introduce additional
+   constraints.
+   
+### Enum class
+
+2. Enum class represents an enumerations like in java
+
+3. If you need a class with a fixed number of values
+
+4. You can define the these values as enum constants
+
+```kotlin
+enum class Color {
+	BLUE, ORANGE, RED
+}
+```
+
+5. The different with java is that now enum is not a separate instance
+
+6. But a modifier before the class keywork.
+
+7. The most common way to work with enum constants is to use when expressions
+
+```kotlin
+import Color.*
+
+enum class Color {
+	BLUE, ORANGE, RED
+}
+
+fun getDescription(color: Color) =
+	when (color){
+    	BLUE -> "cold"
+        ORANGE -> "mild"
+        RED -> "hot"
+    }
+```
+
+8. You access enum constants by their full names
+
+9. But, if you import enum constants
+
+10. You can use them without explicit specification
+
+```kotlin
+package mypackage
+
+import mypackage.Color.*
+
+enum class Color {
+	BLUE, ORANGE, RED
+}
+
+fun getDescription(color: Color) =
+	when (color) {
+    	BLUE -> "cold"
+        ORANGE -> "mild"
+        RED -> "hot"
+    }
+```
+
+11. Inside enum class, you can define member functions and properties
+
+```kotlin
+enum class Color(
+    val r: Int, val g: Int, val b: Int
+
+){
+    BLUE(0,0,255), ORANGE(255,165,0), RED(255,0,0);
+    fun rgb() = ( r * 256 + g ) * 256 + b
+}
+
+fun main(){
+    println(Color.BLUE.r)
+    println(Color.BLUE.rgb())
+}
+```
+
+### Data class
+
+1. Data modifier generates useful methods:
+
+	- equals, hashcode, copy, toString adn some others
+    
+    
+2. You can call the copy method to copy an instance of
+
+```kotlin
+data class Contact(val name: String, val address: String)
+
+val c = Contact("Carlos", "calle larga 1")
+val c_copy = c.copy(address = "new address")
+
+fun main(){
+    println(c_copy)
+}
+```
+
+3. What will be printed?
+
+```kotlin
+class Foo(val first: Int, val second: Int)
+data class Bar(val first: Int, val second: Int)
+fun main(){
+	val f1 = Foo(1, 2) 
+	val f2 = Foo(1, 2) 
+	println(f1 == f2)
+    
+    val f3 = f1
+    
+    println(f1 == f3)
+
+	val b1 = Bar(1, 2) 
+	val b2 = Bar(1, 2) 
+	println(b1 == b2)
+}
+```
+
+4. For data classes the ***right equals*** and ***hasCode***
+   methods are generated.
+   
+```kotlin
+data class Bar(val first: Int, val second: Int){
+	override funn equals(other: Any?): Boolean {
+    	if (this === other) return true
+        if (other !is Bar) return false
+        return (first == other.first
+        	&& second == other.second
+    }
+    
+    override fun hashCode(): Int = first * 31 + second
+}
+```
+   
+5. We now compare the elements by their content
+
+6. For the borrowed data class, here we again call equals under the hood
+
+7. But now equals compares the content
+
+8. So we have true as a result
+
+9. Note that the compiler only uses the properties defined inside the primary constructor
+   for the automatically generated functions like to-string, equals and hashCode
+   
+10. To exclude a property from the generated implementations
+
+11. declare it inside the class body
+
+12. Like the nickname property in this example
+
+```kotlin
+//Properties in primary constructor
+
+data class User(val email: String){
+	var nickname: String? = null
+}
+
+fun main(){
+	val user1 = User("voldermor@gmail.com")
+    user1.nickname = "Voldemort"
+    println(user1) // User(email=voldemort@gmail.com)
+}
+```
+
+13. Then, it won't be included in to-string
+
+
 ## Class modifiers II
+
+### Sealed class
+
+1. sealed modifier n front of the class
+
+```kotlin
+interface Expr
+class Num(val value: Int): Expr
+class Sum(val left: Expr, val right: Expr) : Expr
+
+fun eval(e:Expr): Int = when (e) {
+    is Num -> e.value
+    is Sum -> eval(e.left) + eval(e.right)
+    //else -> throw IllegalArgumentException("Unknown expression")
+}
+
+fun main(){
+    // 1 + (2 + 3)
+    println(eval( Sum( Num(1), Sum( Num(2),Num(3) ) ) ) )
+    
+}
+```
+
+2. Esto no compila, por que nada garantiza
+
+3. Que otra implementación de ***Expr*** , sea considerada en el when
+
+4. Por lo tanto para que pueda compilar necesitas agregar la opcion ***else***
+
+5. As sealed modifiers solves this problem for the case when you already
+
+6. Know you're full hierarchy
+
+```kotlin
+sealed class Expr
+class Num(val value: Int): Expr
+class Sum(val left: Expr, val right: Expr) : Expr
+
+fun eval(e:Expr): Int = when (e) {
+    is Num -> e.value
+    is Sum -> eval(e.left) + eval(e.right)
+}
+
+fun main(){
+    // 1 + (2 + 3)
+    println(eval( Sum( Num(1), Sum( Num(2),Num(3) ) ) ) )
+    
+}
+```
+
+7. it restricts that class hierarchy
+
+8. Now with sealed modifier
+
+9. we don't need 'else' branch
+
+10. Note that all the sub-classes must be
+
+11. present in the same file as the parents sealed class
+
+12. It works well for simple hierarchies
+
+13. The different with the previous case is
+
+14. that now expression is a class not an interface
+
+15. That's connected with their underlying implementation
+
+16. Under the hood, the sealed class has a private default constructor so
+
+17. that you couldn't accidentally instantiate this class from Java or create
+    sub-classes
+    
+18. I want to mention here that there is no full matching support in Kotlin
+
+19. When with smart costs covers the majority of the cases like this one
+
+20. When you check the upper level of expression of being a specific type
+
+21. Because it's already so useful there is no full support 
+
+22. from more comnplicated comparations
+
+
+### Nested and inner class
+
+1. Cuando se usan ?
+
+
+### Objects, object expressions & companion objects
+
+1. ***object*** is a snngleton en kotlin
 
 ## Constants
 
